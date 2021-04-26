@@ -4,12 +4,23 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../src/config/db.php';
 
 $app = AppFactory::create();
 
-$app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Hello world!");
-    return $response;
+$app->get('/api/users', function (Request $request, Response $response, $args) {
+    $sql = "SELECT * FROM users";
+
+    try {
+        $db = new db();
+        $pdo = $db->connect();
+        $stmt = $pdo->query($sql);
+        $users = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        echo json_encode($users);
+    } catch (\PDOException $e) {
+        echo '{"msg": {"resp": '.$e->getMessage().'}}';
+    }
 });
 
 $app->run();
