@@ -3,8 +3,8 @@
 class db {
     public function connect(){
         $host = "127.0.0.1";
-        $user= "root";
-        $pass = "amadrocky";
+        $user= "";
+        $pass = "";
         $dbname = "koala";
 
         $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
